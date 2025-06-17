@@ -318,6 +318,7 @@
   
     function submitData() {
       const data = {
+        timestamp: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" })
         nama: document.getElementById('nama').value,
         jk: document.getElementById('jk').value,
         usia: document.getElementById('usia').value,
