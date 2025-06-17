@@ -130,6 +130,7 @@
   <div class="container hidden" id="tmtA">
     <h2>Trail Making Test A</h2>
     <p>Klik angka dari 1 sampai 25 secara berurutan secepat mungkin. Waktu akan mulai saat Anda mengklik angka 1.</p>
+    <p id="errorA">Kesalahan: 0</p>
     <div class="grid" id="gridA"></div>
     <p id="timerA">Waktu: 0.0 detik</p>
     <button onclick="validateTMT('A')">Lanjut ke TMT B</button>
@@ -138,6 +139,7 @@
   <div class="container hidden" id="tmtB">
     <h2>Trail Making Test B</h2>
     <p>Klik angka dan huruf bergantian: 1-A-2-B-3-C dst hingga selesai. Waktu akan mulai saat Anda mengklik angka 1.</p>
+    <p id="errorB">Kesalahan: 0</p>
     <div class="grid" id="gridB"></div>
     <p id="timerB">Waktu: 0.0 detik</p>
     <button onclick="validateTMT('B')">Selesai</button>
@@ -209,6 +211,8 @@
     let tmtAStart = 0;
     let tmtBStart = 0;
     let tmtATimer, tmtBTimer;
+    let tmtAError = 0;
+    let tmtBError = 0;
 
     function startTMT(type) {
       const grid = document.getElementById(type === 'A' ? 'gridA' : 'gridB');
@@ -225,34 +229,54 @@
     }
 
     function handleTMTClick(cell, val, type) {
-      const progress = type === 'A' ? tmtAProgress : tmtBProgress;
-      const expected = type === 'A' ? progress + 1 : [].concat(...Array.from({length: 13}, (_, i) => [i + 1, String.fromCharCode(65 + i)]))[progress];
-      if (val == expected) {
-        if (progress === 0) {
-          if (type === 'A') {
-            tmtAStart = Date.now();
-            tmtATimer = setInterval(() => {
-              const time = ((Date.now() - tmtAStart) / 1000).toFixed(1);
-              document.getElementById('timerA').innerText = `Waktu: ${time} detik`;
-            }, 100);
-          } else {
-            tmtBStart = Date.now();
-            tmtBTimer = setInterval(() => {
-              const time = ((Date.now() - tmtBStart) / 1000).toFixed(1);
-              document.getElementById('timerB').innerText = `Waktu: ${time} detik`;
-            }, 100);
-          }
-        }
-        cell.classList.add('clicked');
-        if (type === 'A') {
-          tmtAProgress++;
-          if (tmtAProgress === 25) clearInterval(tmtATimer);
-        } else {
-          tmtBProgress++;
-          if (tmtBProgress === 26) clearInterval(tmtBTimer);
-        }
+  const progress = type === 'A' ? tmtAProgress : tmtBProgress;
+  const expected = type === 'A'
+    ? progress + 1
+    : [].concat(...Array.from({ length: 13 }, (_, i) => [i + 1, String.fromCharCode(65 + i)]))[progress];
+
+  if (val == expected) {
+    if (progress === 0) {
+      if (type === 'A') {
+        tmtAStart = Date.now();
+        tmtATimer = setInterval(() => {
+          const time = ((Date.now() - tmtAStart) / 1000).toFixed(1);
+          document.getElementById('timerA').innerText = `Waktu: ${time} detik`;
+        }, 100);
+      } else {
+        tmtBStart = Date.now();
+        tmtBTimer = setInterval(() => {
+          const time = ((Date.now() - tmtBStart) / 1000).toFixed(1);
+          document.getElementById('timerB').innerText = `Waktu: ${time} detik`;
+        }, 100);
       }
     }
+    cell.classList.add('clicked');
+    if (type === 'A') {
+      tmtAProgress++;
+      if (tmtAProgress === 25) clearInterval(tmtATimer);
+    } else {
+      tmtBProgress++;
+      if (tmtBProgress === 26) clearInterval(tmtBTimer);
+    }
+  } else {
+    // Klik salah → error count naik
+    if (type === 'A') {
+      tmtAError++;
+      document.getElementById('errorA').innerText = `Kesalahan: ${tmtAError}`;
+    } else {
+      tmtBError++;
+      document.getElementById('errorB').innerText = `Kesalahan: ${tmtBError}`;
+    }
+
+    // Efek warna merah
+    cell.style.background = '#e74c3c';
+    cell.style.color = 'white';
+    setTimeout(() => {
+      cell.style.background = '';
+      cell.style.color = '';
+    }, 500);
+  }
+}
   
     function validateForm() {
       const fields = ['nama', 'jk', 'usia', 'wa', 'univ', 'jurusan', 'semester'];
@@ -303,7 +327,9 @@
         semester: document.getElementById('semester').value,
         isi: isiQuestions.map((_, i) => document.getElementById(`isi${i}`).value),
         tmtA: ((Date.now() - tmtAStart) / 1000).toFixed(1),
-        tmtB: ((Date.now() - tmtBStart) / 1000).toFixed(1)
+tmtAError: tmtAError,
+tmtB: ((Date.now() - tmtBStart) / 1000).toFixed(1),
+tmtBError: tmtBError,
       };
 
       fetch('https://script.google.com/macros/s/AKfycbwTp-GyIpGDqDxPUpjiKvX7_14INJYW4knefhJbZaeHnyzIk4z2iIXtR457z3k2-xwfBA/exec', {
