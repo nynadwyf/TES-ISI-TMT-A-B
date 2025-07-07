@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <title>Trail Making Test A & B - Garis</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alat Tes Psikologi</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-      color: #333;
       margin: 0;
       padding: 0;
+      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+      color: #333;
     }
     .container {
       max-width: 800px;
@@ -18,11 +19,6 @@
       background: #ffffff;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-    canvas {
-      border: 2px solid #333;
-      display: block;
-      margin: 20px auto;
     }
     h1, h2 {
       text-align: center;
@@ -46,74 +42,42 @@
     button:hover {
       background-color: #2980b9;
     }
-    #timerA, #timerB, #errorA, #errorB {
-      font-size: 20px;
-      text-align: center;
-      margin-top: 10px;
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
     }
-    .petunjuk {
-      text-align: center;
-      font-size: 16px;
-      margin-bottom: 10px;
-      padding: 10px;
-      background: #e8f4fc;
-      border-left: 5px solid #3498db;
-      border-radius: 8px;
+    ol {
+      padding-left: 20px;
     }
-    .form-group {
+    .grid {
       display: flex;
-      flex-direction: column;
-      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
     }
-    .form-group label {
-      margin-bottom: 5px;
+    .cell {
+      width: 60px;
+      height: 60px;
+      background: #ecf0f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 8px;
       font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background 0.2s ease;
     }
-    input, select {
-      padding: 8px;
-      font-size: 14px;
+    .cell:hover {
+      background: #d0e6fa;
     }
-
-    .checkmark {
-      width: 80px;
-      height: 80px;
-      display: block;
-      stroke-width: 2;
-      stroke: #27ae60;
-      stroke-miterlimit: 10;
-      margin: 0 auto 20px;
-      box-shadow: inset 0px 0px 0px #27ae60;
-      animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
-    }
-
-    .checkmark-circle {
-      stroke-dasharray: 166;
-      stroke-dashoffset: 166;
-      stroke-width: 2;
-      stroke-miterlimit: 10;
-      stroke: #27ae60;
-      fill: none;
-      animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-    }
-
-    .checkmark-check {
-      transform-origin: 50% 50%;
-      stroke-dasharray: 48;
-      stroke-dashoffset: 48;
-      animation: stroke 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
-    }
-
-    @keyframes stroke {
-      100% { stroke-dashoffset: 0; }
-    }
-
-    @keyframes scale {
-      0%, 100% { transform: none; }
-      50% { transform: scale(1.1); }
-    }
-
-    @keyframes fill {
-      100% { box-shadow: inset 0px 0px 0px 30px #27ae60; }
+    .clicked {
+      background: #2ecc71;
+      color: white;
     }
   </style>
 </head>
@@ -136,25 +100,24 @@
       <li>Moh. Arifin</li>
     </ol>
     <p>Dengan mengklik tombol di bawah ini, Anda menyatakan bersedia untuk berpartisipasi dalam penelitian ini.</p>
+    <p>Terima kasih atas perhatian dan partisipasi Anda.</p>
     <button onclick="showSection('form')">Mulai</button>
   </div>
 
   <div class="container hidden" id="form">
     <h2>Form Identitas</h2>
-<div class="form-group"><label>Nama Lengkap</label><input type="text" id="nama" required></div>
-<div class="form-group"><label>Jenis Kelamin</label>
-  <select id="jk" required>
-    <option value="">Pilih Jenis Kelamin</option>
-    <option value="Laki-laki">Laki-laki</option>
-    <option value="Perempuan">Perempuan</option>
-  </select>
-</div>
-<div class="form-group"><label>Usia</label><input type="number" id="usia" required></div>
-<div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="wa" required></div>
-<div class="form-group"><label>Universitas</label><input type="text" id="univ" required></div>
-<div class="form-group"><label>Jurusan</label><input type="text" id="jurusan" required></div>
-<div class="form-group"><label>Semester</label><input type="text" id="semester" required></div>
-<button onclick="validateForm()">Lanjut</button>
+    <input type="text" id="nama" placeholder="Nama Lengkap" required>
+    <select id="jk" required>
+      <option value="">Pilih Jenis Kelamin</option>
+      <option value="Laki-laki">Laki-laki</option>
+      <option value="Perempuan">Perempuan</option>
+    </select>
+    <input type="number" id="usia" placeholder="Usia" required>
+    <input type="text" id="wa" placeholder="Nomor WhatsApp" required>
+    <input type="text" id="univ" placeholder="Universitas" required>
+    <input type="text" id="jurusan" placeholder="Jurusan" required>
+    <input type="text" id="semester" placeholder="Semester" required>
+    <button onclick="validateForm()">Lanjut</button>
   </div>
 
   <div class="container hidden" id="isi">
@@ -163,29 +126,32 @@
     <div id="isiForm"></div>
     <button onclick="validateISI()">Lanjut ke TMT A</button>
   </div>
-  <div class="container" id="tmtA">
+
+  <div class="container hidden" id="tmtA">
     <h2>Trail Making Test A</h2>
-    <div class="petunjuk">🧠 Petunjuk: Hubungkan angka secara berurutan dari <strong>1</strong>, <strong>2</strong>, <strong>3</strong>, hingga <strong>25</strong> secepat dan setepat mungkin.</div>
-    <div id="timerA">Waktu: 0 detik</div>
-    <div id="errorA">Kesalahan: 0</div>
-    <canvas id="canvasA" width="600" height="400"></canvas>
-    <button id="nextBtn" onclick="handleNextClick()">Lanjut ke TMT B</button>
+    <p>Klik angka dari 1 sampai 25 secara berurutan secepat mungkin. Waktu akan mulai saat Anda mengklik angka 1.</p>
+    <p id="errorA">Kesalahan: 0</p>
+    <div class="grid" id="gridA"></div>
+    <p id="timerA">Waktu: 0.0 detik</p>
+    <button onclick="validateTMT('A')">Lanjut ke TMT B</button>
   </div>
 
   <div class="container hidden" id="tmtB">
-  <h2>Trail Making Test B</h2>
-  <div class="petunjuk">🔡 Petunjuk: Hubungkan angka dan huruf secara bergantian, seperti <strong>1</strong> - <strong>A</strong> - <strong>2</strong> - <strong>B</strong> - <strong>3</strong> - <strong>C</strong>, dan seterusnya, secepat dan setepat mungkin.</div>
-  <div id="timerB">Waktu: 0 detik</div>
-  <div id="errorB">Kesalahan: 0</div>
-  <canvas id="canvasB" width="600" height="400"></canvas>
-  <button id="submitBtn" onclick="handleSubmitClick()">Selesai</button>
-</div>
-    
-    
-    
+    <h2>Trail Making Test B</h2>
+    <p>Klik angka dan huruf bergantian: 1-A-2-B-3-C dst hingga selesai. Waktu akan mulai saat Anda mengklik angka 1.</p>
+    <p id="errorB">Kesalahan: 0</p>
+    <div class="grid" id="gridB"></div>
+    <p id="timerB">Waktu: 0.0 detik</p>
+    <button onclick="validateTMT('B')">Selesai</button>
+  </div>
+
+  <div class="container hidden" id="thankyou">
+    <h2>Terima Kasih</h2>
+    <p>Jawaban Anda telah berhasil dikumpulkan.</p>
+  </div>
 
   <script>
-const isiQuestions = [
+    const isiQuestions = [
   {
     q: 'Seberapa sulitkah Anda memulai tidur akhir-akhir ini?',
     options: ['Tidak sulit', 'Sedikit sulit', 'Lumayan sulit', 'Sulit', 'Sangat sulit']
@@ -215,276 +181,165 @@ const isiQuestions = [
     options: ['Tidak khawatir', 'Sedikit khawatir', 'Cukup khawatir', 'Khawatir', 'Sangat khawatir']
   }
 ];
-    let tmtACompleted = false;
-    let tmtBCompleted = false;
-
-    function handleNextClick() {
-      if (!tmtACompleted) {
-        alert("Harap selesaikan TMT A terlebih dahulu.");
-        return;
-      }
-      document.getElementById("tmtA").classList.add("hidden");
-      document.getElementById("tmtB").classList.remove("hidden");
-      initTMT('B');
-    }
-
-    function handleSubmitClick() {
-      if (!tmtBCompleted) {
-        alert("Harap selesaikan TMT B terlebih dahulu.");
-        return;
-      }
-      showSection('thankyou');
-    }
-
-    function drawPoints(ctx, points, currentIndex, drawnLines, currentPath) {
-      ctx.clearRect(0, 0, 600, 400);
-      ctx.lineWidth = 2;
-
-      ctx.strokeStyle = '#3498db';
-      drawnLines.forEach(line => {
-        ctx.beginPath();
-        ctx.moveTo(line.from.x, line.from.y);
-        ctx.lineTo(line.to.x, line.to.y);
-        ctx.stroke();
-      });
-
-      if (currentPath && currentPath.active) {
-        ctx.beginPath();
-        ctx.moveTo(currentPath.from.x, currentPath.from.y);
-        ctx.lineTo(currentPath.to.x, currentPath.to.y);
-        ctx.strokeStyle = '#f39c12';
-        ctx.stroke();
-      }
-
-      ctx.font = "16px Arial";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      for (let i = 0; i < points.length; i++) {
-        let p = points[i];
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 15, 0, 2 * Math.PI);
-        if (i < currentIndex) {
-          ctx.fillStyle = '#2ecc71';
-        } else if (i === currentIndex && currentPath && currentPath.active) {
-          ctx.fillStyle = '#f1c40f';
-        } else {
-          ctx.fillStyle = '#e74c3c';
-        }
-        ctx.fill();
-        ctx.stroke();
-        ctx.fillStyle = '#fff';
-        ctx.fillText(p.label, p.x, p.y);
-      }
-    }
-
-    function generateUniquePoints(labels) {
-      const points = [];
-      while (points.length < labels.length) {
-        const x = Math.random() * 550 + 25;
-        const y = Math.random() * 350 + 25;
-        if (!points.some(p => Math.hypot(p.x - x, p.y - y) < 40)) {
-          points.push({ x, y, label: labels[points.length] });
-        }
-      }
-      return points;
-    }
-
-    function startTimer(id) {
-      let start = Date.now();
-      const interval = setInterval(() => {
-        let t = Math.floor((Date.now() - start) / 1000);
-        document.getElementById("timer" + id).innerText = `Waktu: ${t} detik`;
-      }, 1000);
-      return interval;
-    }
-
-    function initTMT(type) {
-      const canvas = document.getElementById("canvas" + type);
-      const ctx = canvas.getContext("2d");
-      const labels = type === 'A' ? [...Array(25).keys()].map(n => (n + 1).toString()) : [].concat(...Array.from({length: 13}, (_, i) => [i + 1, String.fromCharCode(65 + i)]));
-      const points = generateUniquePoints(labels);
-      let index = 0, errors = 0, lines = [], interval;
-      let currentPath = { active: false, from: null, to: null };
-
-      drawPoints(ctx, points, index, lines, currentPath);
-
-      let isDrawing = false;
-      canvas.addEventListener("mousedown", function(e) {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const expected = points[index];
-        if (Math.hypot(x - expected.x, y - expected.y) < 15) {
-          if (index === 0) interval = startTimer(type);
-          currentPath.active = true;
-          currentPath.from = { x: expected.x, y: expected.y };
-          currentPath.to = { x, y };
-          isDrawing = true;
-        }
-      });
-
-      canvas.addEventListener("mousemove", function(e) {
-        if (!isDrawing) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        currentPath.to = { x, y };
-        drawPoints(ctx, points, index, lines, currentPath);
-      });
-
-      canvas.addEventListener("mouseup", function(e) {
-        if (!isDrawing) return;
-        isDrawing = false;
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const expected = points[index + 1];
-        if (expected && Math.hypot(x - expected.x, y - expected.y) < 15) {
-          lines.push({ from: points[index], to: expected });
-          index++;
-          if (index === labels.length - 1) {
-            clearInterval(interval);
-            document.getElementById("timer" + type).innerText += ' (Selesai)';
-            if (type === 'A') {
-              tmtACompleted = true;
-              document.getElementById("nextBtn").disabled = false;
-            } else {
-              tmtBCompleted = true;
-              document.getElementById("submitBtn").disabled = false;
-            }
-          }
-        } else {
-          errors++;
-          document.getElementById("error" + type).innerText = `Kesalahan: ${errors}`;
-        }
-        currentPath.active = false;
-        drawPoints(ctx, points, index, lines, currentPath);
-      });
-    }
-
-    window.onload = () => {
-  document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
-  document.getElementById('intro').classList.remove('hidden');
-};
-  function validateForm() {
-  const fields = ['nama', 'jk', 'usia', 'wa', 'univ', 'jurusan', 'semester'];
-  for (let id of fields) {
-    if (!document.getElementById(id).value) {
-      alert('Mohon lengkapi semua data identitas.');
-      return;
-    }
-  }
-  showSection('isi');
-}
-
-function validateISI() {
-  for (let i = 0; i < isiQuestions.length; i++) {
-    const select = document.getElementById(`isi${i}`);
-    if (!select || select.value === '') {
-      alert('Mohon isi semua pertanyaan ISI.');
-      return;
-    }
-  }
-  showSection('tmtA');
-  initTMT('A');
-}
 
 
-function loadISI() {
-  const isiForm = document.getElementById('isiForm');
-  isiForm.innerHTML = '';
-  isiQuestions.forEach((item, i) => {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'form-group';
-
-    const label = document.createElement('label');
-    label.innerText = `${i + 1}. ${item.q}`;
-
-    const select = document.createElement('select');
-    select.id = `isi${i}`;
-    select.innerHTML = '<option value="">Pilih</option>' + item.options.map((opt, idx) => `<option value="${idx}">${idx} - ${opt}</option>`).join('');
-
-    wrapper.appendChild(label);
-    wrapper.appendChild(select);
-    isiForm.appendChild(wrapper);
-  });
-}
-
-
-</script>
-
-  <div class="container hidden" id="thankyou">
-    <h2>Terima Kasih 🙏</h2>
-    <div class="thankyou-icon">
-      <svg class="checkmark" viewBox="0 0 52 52">
-        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-        <path class="checkmark-check" fill="none" d="M14 27l7 7 16-16"/>
-      </svg>
-    </div>
-    <p>Terima kasih telah berpartisipasi dalam penelitian ini.</p>
-    <p>Seluruh hasil dari tes ini akan <strong>dirahasiakan</strong> dan hanya akan digunakan untuk kepentingan penelitian akademik.</p>
-    <p>Semoga harimu menyenangkan!</p>
-    <button onclick="showSection('intro')">Kembali ke Halaman Awal</button>
-    <audio id="successSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_78b3c0ce40.mp3" preload="auto"></audio>
-  </div>
-
-  <script>
     function showSection(id) {
       document.querySelectorAll('.container').forEach(el => el.classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
+
       if (id === 'isi') loadISI();
-      if (id === 'thankyou') {
-        const sound = document.getElementById('successSound');
-        if (sound) {
-          sound.currentTime = 0;
-          sound.play();
-        }
-      }
-    }
-  </script>
-
-<script>
-  async function submitToSheet() {
-    const isiJawaban = [];
-    for (let i = 0; i < isiQuestions.length; i++) {
-      isiJawaban.push(document.getElementById(`isi${i}`).value);
+      if (id === 'tmtA') startTMT('A');
+      if (id === 'tmtB') startTMT('B');
     }
 
-      const data = {
-    nama: document.getElementById("nama").value,
-    jk: document.getElementById("jk").value,
-    usia: document.getElementById("usia").value,
-    wa: document.getElementById("wa").value,
-    univ: document.getElementById("univ").value,
-    jurusan: document.getElementById("jurusan").value,
-    semester: document.getElementById("semester").value,
-    isi: isiJawaban,
-    waktuA: document.getElementById("timerA").innerText.replace("Waktu: ", ""),
-    errorA: document.getElementById("errorA").innerText.replace("Kesalahan: ", ""),
-    waktuB: document.getElementById("timerB").innerText.replace("Waktu: ", ""),
-    errorB: document.getElementById("errorB").innerText.replace("Kesalahan: ", "")
-  };
-
-  try {
-    await fetch("https://script.google.com/macros/s/AKfycbyPhG0GSQPDsssEo1EVrivQ2V8xNQrRN4pKvKKm-a2gbTAGekJsi2entJZNEg_ZCIytaA/exec", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
-});
-  } catch (error) {
-    alert("Gagal mengirim data: " + error);
-  }
+    function loadISI() {
+  const form = document.getElementById('isiForm');
+  form.innerHTML = '';
+  isiQuestions.forEach((item, i) => {
+    let selectHTML = `<label>${i + 1}. ${item.q}</label><select id="isi${i}" required>
+      <option value="">Pilih</option>`;
+    item.options.forEach((opt, index) => {
+      selectHTML += `<option value="${index}">${index} - ${opt}</option>`;
+    });
+    selectHTML += `</select>`;
+    form.innerHTML += selectHTML;
+  });
 }
 
-  function handleSubmitClick() {
-    if (!tmtBCompleted) {
-      alert("Harap selesaikan TMT B terlebih dahulu.");
-      return;
+    let tmtAProgress = 0;
+    let tmtBProgress = 0;
+    let tmtAStart = 0;
+    let tmtBStart = 0;
+    let tmtATimer, tmtBTimer;
+    let tmtAError = 0;
+    let tmtBError = 0;
+
+    function startTMT(type) {
+      const grid = document.getElementById(type === 'A' ? 'gridA' : 'gridB');
+      grid.innerHTML = '';
+      const items = type === 'A' ? [...Array(25).keys()].map(x => x + 1) : [].concat(...Array.from({length: 13}, (_, i) => [i + 1, String.fromCharCode(65 + i)]));
+      const shuffled = items.sort(() => Math.random() - 0.5);
+      shuffled.forEach(val => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.innerText = val;
+        cell.onclick = () => handleTMTClick(cell, val, type);
+        grid.appendChild(cell);
+      });
     }
-    submitToSheet().then(() => showSection('thankyou'));
+
+    function handleTMTClick(cell, val, type) {
+  const progress = type === 'A' ? tmtAProgress : tmtBProgress;
+  const expected = type === 'A'
+    ? progress + 1
+    : [].concat(...Array.from({ length: 13 }, (_, i) => [i + 1, String.fromCharCode(65 + i)]))[progress];
+
+  if (val == expected) {
+    if (progress === 0) {
+      if (type === 'A') {
+        tmtAStart = Date.now();
+        tmtATimer = setInterval(() => {
+          const time = ((Date.now() - tmtAStart) / 1000).toFixed(1);
+          document.getElementById('timerA').innerText = `Waktu: ${time} detik`;
+        }, 100);
+      } else {
+        tmtBStart = Date.now();
+        tmtBTimer = setInterval(() => {
+          const time = ((Date.now() - tmtBStart) / 1000).toFixed(1);
+          document.getElementById('timerB').innerText = `Waktu: ${time} detik`;
+        }, 100);
+      }
+    }
+    cell.classList.add('clicked');
+    if (type === 'A') {
+      tmtAProgress++;
+      if (tmtAProgress === 25) clearInterval(tmtATimer);
+    } else {
+      tmtBProgress++;
+      if (tmtBProgress === 26) clearInterval(tmtBTimer);
+    }
+  } else {
+    // Klik salah → error count naik
+    if (type === 'A') {
+      tmtAError++;
+      document.getElementById('errorA').innerText = `Kesalahan: ${tmtAError}`;
+    } else {
+      tmtBError++;
+      document.getElementById('errorB').innerText = `Kesalahan: ${tmtBError}`;
+    }
+
+    // Efek warna merah
+    cell.style.background = '#e74c3c';
+    cell.style.color = 'white';
+    setTimeout(() => {
+      cell.style.background = '';
+      cell.style.color = '';
+    }, 500);
   }
-</script>
+}
+  
+    function validateForm() {
+      const fields = ['nama', 'jk', 'usia', 'wa', 'univ', 'jurusan', 'semester'];
+      for (let id of fields) {
+        if (!document.getElementById(id).value) {
+          alert('Mohon lengkapi semua data identitas.');
+          return;
+        }
+      }
+      showSection('isi');
+    }
+
+    function validateISI() {
+      for (let i = 0; i < isiQuestions.length; i++) {
+        if (!document.getElementById(`isi${i}`).value) {
+          alert('Mohon isi semua pertanyaan ISI.');
+          return;
+        }
+      }
+      showSection('tmtA');
+    }
+
+    function validateTMT(type) {
+      if (type === 'A' && tmtAProgress < 25) {
+        alert('Harap selesaikan TMT A terlebih dahulu.');
+        return;
+      }
+      if (type === 'B' && tmtBProgress < 26) {
+        alert('Harap selesaikan TMT B terlebih dahulu.');
+        return;
+      }
+      if (type === 'A') {
+        showSection('tmtB');
+      } else {
+        submitData();
+        showSection('thankyou');
+      }
+    }
+  
+    function submitData() {
+      const data = {
+  timestamp: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" }),
+  nama: document.getElementById('nama').value,
+  jk: document.getElementById('jk').value,
+  usia: document.getElementById('usia').value,
+  wa: document.getElementById('wa').value,
+  univ: document.getElementById('univ').value,
+  jurusan: document.getElementById('jurusan').value,
+  semester: document.getElementById('semester').value,
+  isi: isiQuestions.map((_, i) => document.getElementById(`isi${i}`).value),
+  tmtA: ((Date.now() - tmtAStart) / 1000).toFixed(1),
+  tmtAError: tmtAError,
+  tmtB: ((Date.now() - tmtBStart) / 1000).toFixed(1),
+  tmtBError: tmtBError
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbycJMfMxvrOdJ8B5fPiq5yqGaOUTG0dV_ILIaLrBIpKBAKOSWLJ7yfsfekd2XuDqf0jZg/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    }
+  </script>
 </body>
 </html>
